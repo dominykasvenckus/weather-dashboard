@@ -13,14 +13,17 @@ import { useState } from "react";
 type DatePickerProps = {
   label?: string;
   placeholder?: string;
+  value?: Date;
+  onChange?: (date?: Date) => void;
 };
 
 export function DatePicker({
   label,
-  placeholder = "Select date",
+  placeholder = "Select Date",
+  value,
+  onChange,
 }: DatePickerProps) {
   const [open, setOpen] = useState(false);
-  const [date, setDate] = useState<Date | undefined>(undefined);
 
   return (
     <Field className="w-full">
@@ -32,17 +35,17 @@ export function DatePicker({
             id="date"
             className="w-full justify-start font-normal text-muted-foreground"
           >
-            {date ? date.toLocaleDateString() : placeholder}
+            {value ? value.toLocaleDateString() : placeholder}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto overflow-hidden p-0" align="start">
           <Calendar
             mode="single"
-            selected={date}
-            defaultMonth={date}
+            selected={value}
+            defaultMonth={value}
             captionLayout="dropdown"
             onSelect={(date) => {
-              setDate(date);
+              onChange?.(date);
               setOpen(false);
             }}
           />
