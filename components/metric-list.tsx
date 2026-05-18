@@ -28,10 +28,8 @@ export function MetricList({ value, setValue }: MetricListProps) {
   };
 
   return (
-    <div className="flex items-center gap-4 rounded-md border p-2">
-      <span className="text-sm text-muted-foreground font-medium">
-        Metrics:
-      </span>
+    <div className="flex flex-wrap items-center gap-4 rounded-lg border p-2 bg-card min-w-0">
+      <span className="text-sm text-foreground font-medium">Metrics:</span>
       {METRIC_OPTIONS.map(({ id, label }) => (
         <div key={id} className="flex items-center gap-2">
           <Checkbox

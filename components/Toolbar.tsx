@@ -1,9 +1,9 @@
 "use client";
 
 import { useDashboardParams } from "@/hooks/use-dashboard-params";
-import { format } from "date-fns";
+import { format, subDays } from "date-fns";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ComputedSeriesList } from "./computed-series-list";
 import { DatePicker } from "./date-picker";
 import { MetricList } from "./metric-list";
@@ -43,7 +43,7 @@ function Content({
   };
 
   return (
-    <div className="flex flex-col gap-4 p-4 border rounded-md">
+    <div className="flex flex-col gap-2 p-4 border rounded-xl bg-card shadow-sm">
       <DatePicker
         placeholder="Date From"
         value={draftStart}
@@ -54,7 +54,7 @@ function Content({
         value={draftEnd}
         onChange={setDraftEnd}
       />
-      <div className="flex items-center gap-4">
+      <div className="flex flex-wrap items-center gap-2">
         <MetricList value={draftMetrics} setValue={setDraftMetrics} />
         <ComputedSeriesList value={draftComputed} setValue={setDraftComputed} />
         <Button onClick={handleApplyClick}>Apply</Button>
@@ -68,17 +68,31 @@ export function Toolbar() {
   const params = useDashboardParams();
   const { metrics, computed, startDate, endDate, setParams } = params;
   const toolbarKey = `${metrics.join(",")}-${computed.join(",")}-${startDate}-${endDate}`;
+  const hasInitialized = useRef(false);
 
   useEffect(() => {
+    if (hasInitialized.current) {
+      return;
+    }
+
     const missingMetrics = !searchParams.has("metrics");
     const missingComputed = !searchParams.has("computed");
+    const missingStart = !searchParams.has("start");
+    const missingEnd = !searchParams.has("end");
 
-    if (missingMetrics || missingComputed) {
+    if (missingMetrics || missingComputed || missingStart || missingEnd) {
+      const today = new Date();
+      const lastWeek = subDays(today, 7);
+
       setParams({
         ...(missingMetrics ? { metrics: ["temp", "humidity"] } : {}),
         ...(missingComputed ? { computed: ["movingAvg"] } : {}),
+        ...(missingStart ? { start: format(lastWeek, "yyyy-MM-dd") } : {}),
+        ...(missingEnd ? { end: format(today, "yyyy-MM-dd") } : {}),
       });
     }
+
+    hasInitialized.current = true;
   }, [searchParams, setParams]);
 
   return <Content key={toolbarKey} {...params} />;

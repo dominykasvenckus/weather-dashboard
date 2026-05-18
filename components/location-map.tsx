@@ -93,11 +93,11 @@ export function LocationMap() {
   };
 
   return (
-    <div className="flex flex-col w-full border rounded-md p-4 bg-background shadow-sm">
-      <h2 className="text-xs font-semibold uppercase text-muted-foreground mb-4 tracking-wider">
+    <div className="flex flex-col border rounded-xl p-4 bg-card shadow-sm h-full md:h-157.5">
+      <h2 className="text-xs font-semibold uppercase text-foreground mb-4 tracking-wider">
         Saved Locations Map
       </h2>
-      <div className="relative h-96 w-full rounded border border-dashed border-border overflow-hidden mb-4">
+      <div className="relative flex-1 min-h-96 w-full rounded border border-dashed border-border overflow-hidden mb-4">
         <Map center={[50, 15]} zoom={4} className="h-full w-full">
           <MapTileLayer />
           <MapZoomControl />
@@ -128,7 +128,7 @@ export function LocationMap() {
         </Map>
       </div>
       <div className="flex flex-col gap-3">
-        <span className="text-xs text-muted-foreground">
+        <span className="text-xs text-foreground">
           Regular outlines are saved locations, bold are selected, and dashed
           are drafts
         </span>

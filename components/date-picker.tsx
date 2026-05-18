@@ -8,6 +8,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 
 type DatePickerProps = {
@@ -33,7 +34,10 @@ export function DatePicker({
           <Button
             variant="outline"
             id="date"
-            className="w-full justify-start font-normal text-muted-foreground"
+            className={cn(
+              "w-full justify-start font-normal",
+              !value && "text-muted-foreground",
+            )}
           >
             {value ? value.toLocaleDateString() : placeholder}
           </Button>
