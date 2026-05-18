@@ -56,7 +56,7 @@ function MetricChart({
     label = "Wind Speed";
   }
 
-  const computedSeries = computeSeries(data, mappedKey);
+  const computedSeries = computeSeries(data, mappedKey, computed);
   const dates = data.map((d) => d.time);
   const rawValues = data.map((d) => d[mappedKey]);
 

@@ -53,31 +53,39 @@ export async function fetchWeather(
 export function computeSeries(
   data: WeatherDataPoint[],
   metric: keyof Omit<WeatherDataPoint, "time">,
+  computed: string[] = [],
 ): ComputedDataMap {
   const values = data.map((d) => d[metric]);
   const validValues = values.filter((v): v is number => v !== null);
 
-  const min = validValues.length > 0 ? Math.min(...validValues) : null;
-  const max = validValues.length > 0 ? Math.max(...validValues) : null;
+  let min: number | null = null;
+  let max: number | null = null;
+  if (computed.includes("minMax") && validValues.length > 0) {
+    min = Math.min(...validValues);
+    max = Math.max(...validValues);
+  }
 
-  const movingAvg = values.map((_, idx, arr) => {
-    if (idx < 6) return null;
+  let movingAvg: (number | null)[] = new Array(values.length).fill(null);
+  if (computed.includes("movingAvg")) {
+    movingAvg = values.map((_, idx, arr) => {
+      if (idx < 6) return null;
 
-    let sum = 0;
-    let count = 0;
-    for (let i = idx - 6; i <= idx; i++) {
-      if (arr[i] !== null) {
-        sum += arr[i] as number;
-        count++;
+      let sum = 0;
+      let count = 0;
+      for (let i = idx - 6; i <= idx; i++) {
+        if (arr[i] !== null) {
+          sum += arr[i] as number;
+          count++;
+        }
       }
-    }
-    return count > 0 ? sum / count : null;
-  });
+      return count > 0 ? sum / count : null;
+    });
+  }
 
   const trend: (number | null)[] = new Array(values.length).fill(null);
   const n = validValues.length;
 
-  if (n > 1) {
+  if (computed.includes("trend") && n > 1) {
     let sumX = 0,
       sumY = 0,
       sumXY = 0,
