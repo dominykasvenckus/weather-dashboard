@@ -122,9 +122,7 @@ function MetricChart({
 
   return (
     <div className="h-75 w-full border rounded p-4 bg-background">
-      <h3 className="text-center font-medium mb-4">
-        {label}
-      </h3>
+      <h3 className="text-center font-medium mb-4">{label}</h3>
       <div className="h-57.5 w-full">
         <Line
           data={chartData}
