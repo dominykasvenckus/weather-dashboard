@@ -71,7 +71,7 @@ export function LocationMap() {
       const newLocation = addLocation({
         lat: draftLocation[0],
         lng: draftLocation[1],
-        name: `Location ${locations.length + 1}`,
+        name: `Location (${draftLocation[0].toFixed(2)}, ${draftLocation[1].toFixed(2)})`,
       });
       setDraftLocation(null);
       setParams({ location: `${newLocation.lat},${newLocation.lng}` });

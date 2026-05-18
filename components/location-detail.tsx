@@ -38,12 +38,10 @@ function MetricChart({
   metricId,
   data,
   computed,
-  title,
 }: {
   metricId: string;
   data: WeatherDataPoint[];
   computed: string[];
-  title: string;
 }) {
   let mappedKey: keyof Omit<WeatherDataPoint, "time"> = "temp";
   let label = "Temperature";
@@ -125,7 +123,7 @@ function MetricChart({
   return (
     <div className="h-75 w-full border rounded p-4 bg-background">
       <h3 className="text-center font-medium mb-4">
-        {label} - {title}
+        {label}
       </h3>
       <div className="h-57.5 w-full">
         <Line
@@ -275,7 +273,6 @@ export function LocationDetail() {
               metricId={metricId}
               data={data}
               computed={computed}
-              title={active.name}
             />
           ))}
         </div>
